@@ -10,8 +10,6 @@ import { MoviesService } from '../../data-access/movies/movies.service';
 export class MoviesListComponent implements OnInit {
   moviesForm: FormGroup;
   movies: IMovie[] | null;
-  movieUrlBase = `https://www.imdb.com/title/`;
-  selectedMovie: IMovie;
   showMovieResults: boolean;
 
   constructor(
@@ -36,9 +34,5 @@ export class MoviesListComponent implements OnInit {
           this.movies = movies;
         }
       );
-  }
-
-  getMovie(id: string): void {
-    this.moviesService.getMovie(id).subscribe((movie) => this.selectedMovie = movie);
   }
 }

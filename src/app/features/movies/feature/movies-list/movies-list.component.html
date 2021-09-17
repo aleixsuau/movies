@@ -65,19 +65,25 @@
 
 <form [formGroup]="moviesForm">
   <h1>IMDB Movie Search</h1>
-  <p>
-    <label for="title">Title</label>
 
-    <input type="text" id="title" formControlName="title" />
-  </p>
+  <mat-form-field appearance="legacy">
+    <mat-label>Title</mat-label>
 
-  <p>
-    <label class="control-label" for="year">Year</label>
+    <input matInput type="text" id="title" formControlName="title" placeholder="Movie title"/>
 
-    <input type="number" id="year" name="year" formControlName="year" />
-  </p>
+    <mat-icon matPrefix>movie</mat-icon>
+  </mat-form-field>
 
-  <button 
+    <mat-form-field appearance="legacy">
+      <mat-label>Year</mat-label>
+    
+      <input matInput type="number" id="year" formControlName="year" placeholder="Movie year" />
+    
+      <mat-icon matPrefix>calendar</mat-icon>
+    </mat-form-field>
+
+  <button
+    mat-raised-button
     type="submit"
     (click)="searchMovies(moviesForm.get('title')?.value, moviesForm.get('year')?.value)"
     [disabled]="moviesForm.invalid"
@@ -86,54 +92,27 @@
   </button>
 </form>
 
-<form>
   Results: {{movies?.length || 0}}
-  <p>
-    <label for="sort">Sort By</label>
-    <select id="sort" name="sort">
-      <option selected disabled>Sort By</option>
-      <option value="a-zAsc">Alphabetically (Ascending)</option>
-      <option value="a-zDsc">Alphabetically (Descending)</option>
-      <option value="yearAsc">Year (Ascending)</option>
-      <option value="yearDsc">Year (Descending)</option>
-    </select>
-  </p>
-</form>
+
+<mat-form-field appearance="fill">
+  <mat-label>Sort By</mat-label>
+
+  <mat-select>
+    <mat-option selected disabled>Sort By</mat-option>
+    <mat-option value="a-zAsc">Alphabetically (Ascending)</mat-option>
+    <mat-option value="a-zDsc">Alphabetically (Descending)</mat-option>
+    <mat-option value="yearAsc">Year (Ascending)</mat-option>
+    <mat-option value="yearDsc">Year (Descending)</mat-option>
+  </mat-select>
+</mat-form-field>
 
 <div *ngIf="!movies && showMovieResults">
   No results found
 </div>
 
-<div class="movies" *ngIf="movies && showMovieResults">
-  <div class="movie" *ngFor="let movie of movies">
-    <h2>{{ movie.Title }}</h2>
-
-    <p>{{ movie.Year }}</p>
-
-    <img [src]="movie.Poster" />
-
-    <p>
-      <a [href]="movieUrlBase + movie.imdbID" target="_blank">Open IMDB Page</a>
-
-      <button type="button" (click)="getMovie(movie.imdbID)">
-        View Details
-      </button>
-    </p>
-
-    <ul *ngIf="movie.imdbID === selectedMovie?.imdbID">
-      <li>Rated: {{selectedMovie.Rated}}</li>
-      <li>Runtime: {{selectedMovie.Runtime}}</li>
-      <li>Released: {{selectedMovie.Released}}</li>
-      <li>Genre: {{selectedMovie.Genre}}</li>
-      <li>Director: {{selectedMovie.Director}}</li>
-      <li>
-        Plot: {{selectedMovie.Plot}}
-      </li>
-      <ng-container></ng-container>
-      <li *ngFor="let rating of selectedMovie.Ratings">
-        Rating ({{rating.Source}}): {{rating.Value}}
-      </li>
-    </ul>
+<div class="movies" *ngIf="movies">
+  <div class="movie" >
+    <app-movie-card *ngFor="let movie of movies" [movie]="movie"></app-movie-card>
   </div>
 </div>
 

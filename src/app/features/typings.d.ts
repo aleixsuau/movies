@@ -3,7 +3,15 @@ interface IAPIResponse {
   Search: IMovie[];
   [key: string]: unknown;
 }
+
 interface IMovie {
+  Poster: string;
+  Title: string;
+  Type: string;
+  Year: string;
+  imdbID: string;
+}
+interface IMovieDetail {
   Actors: string;
   Awards: string;
   BoxOffice: string;

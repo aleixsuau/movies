@@ -32,7 +32,7 @@ export class MoviesService {
       );
   }
 
-  getMovie(id: string): Observable<IMovie> {
+  getMovie(id: string): Observable<IMovieDetail> {
     const endpoint = `${this.baseUrl}`;
     let params = {};
 
@@ -40,6 +40,6 @@ export class MoviesService {
       params = { ...params, i: id };
     }
 
-    return this.http.get<IMovie>(endpoint, { params });
+    return this.http.get<IMovieDetail>(endpoint, { params });
   }
 }
