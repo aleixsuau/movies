@@ -24,12 +24,16 @@
       Search
     </button>
   </form>
-
-  <div class="results" fxLayoutAlign="end center">
-    Results: {{movies?.length || 0}}
-  </div>
   
-  <mat-form-field appearance="fill">
+  <div *ngIf="!movies && showMovieResults">
+    No results found
+  </div>
+
+  <div class="results" fxLayoutAlign="end center" *ngIf="movies">
+      Results: {{movies?.length || 0}}
+    </div>
+
+  <mat-form-field appearance="fill" *ngIf="movies && movies?.length">
     <mat-label>Sort By</mat-label>
   
     <mat-select (selectionChange)="sortMovies($event.value)">
@@ -40,10 +44,6 @@
       <mat-option value="yearDsc">Year (Descending)</mat-option>
     </mat-select>
   </mat-form-field>
-  
-  <div *ngIf="!movies && showMovieResults">
-    No results found
-  </div>
   
   <div class="movies" *ngIf="movies" fxLayout="row wrap" fxLayoutAlign="space-around start">
     <app-movie-card *ngFor="let movie of movies" [movie]="movie"></app-movie-card>
