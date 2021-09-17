@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class MoviesService {
 
   constructor(private http: HttpClient) { }
 
-  searchMovies(title: string): Observable<IAPIResponse> {
+  searchMovies(title: string): Observable<IMovie[] | null> {
     const s = title;
     let params = {};
     const endpoint = `${this.baseUrl}`;
@@ -19,10 +20,14 @@ export class MoviesService {
       params = { ...params, s };
     }
 
-    return this.http.get<IAPIResponse>(endpoint, { params });
+    return this.http
+      .get<IAPIResponse>(endpoint, { params })
+      .pipe(
+        map(response => response.Response ? response.Search : null),
+      );
   }
 
-  getMovie(id: string): Observable<IAPIResponse> {
+  getMovie(id: string): Observable<IMovie> {
     const endpoint = `${this.baseUrl}`;
     let params = {};
 
@@ -30,6 +35,6 @@ export class MoviesService {
       params = { ...params, i: id };
     }
 
-    return this.http.get<IAPIResponse>(endpoint, { params });
+    return this.http.get<IMovie>(endpoint, { params });
   }
 }

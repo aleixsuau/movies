@@ -9,11 +9,10 @@ import { MoviesService } from '../../data-access/movies/movies.service';
 })
 export class MoviesListComponent implements OnInit {
   moviesForm: FormGroup;
-  movies: any;
+  movies: IMovie[] | null;
   movieUrlBase = `https://www.imdb.com/title/`;
-  selectedMovie: any;
-  noResults: any;
-  showMovieResults: any;
+  selectedMovie: IMovie;
+  showMovieResults: boolean;
 
   constructor(
     private moviesService: MoviesService,
@@ -31,21 +30,14 @@ export class MoviesListComponent implements OnInit {
     this.moviesService
       .searchMovies(title)
       .subscribe(
-        (movies: IAPIResponse) => {
-          console.log('movies', movies);
-          if (movies.Response) {
-            this.movies = movies.Search;
-            this.showMovieResults = true;
-          } else {
-            this.showMovieResults = true;
-          }
+        movies => {
+          this.movies = movies;
+          this.showMovieResults = true;
         }
       );
   }
 
   getMovie(id: string): void {
-    this.moviesService.getMovie(id).subscribe((movie) => {
-      this.selectedMovie = movie;
-    });
+    this.moviesService.getMovie(id).subscribe((movie) => this.selectedMovie = movie);
   }
 }
