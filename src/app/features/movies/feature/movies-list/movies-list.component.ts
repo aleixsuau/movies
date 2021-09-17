@@ -29,10 +29,36 @@ export class MoviesListComponent implements OnInit {
 
     this.moviesService
       .searchMovies(title, year)
-      .subscribe(
-        movies => {
-          this.movies = movies;
+      .subscribe(movies => this.movies = movies);
+  }
+
+  sortMovies(sort: string): void {
+    if (!this.movies) { return; }
+
+    if (sort === 'a-zAsc') {
+      this.movies = this.movies.sort((a, b) => {
+        if (a.Title < b.Title) {
+          return - 1;
+        } else if (a.Title > b.Title) {
+          return 1;
+        } else {
+          return 0;
         }
-      );
+      });
+    } else if (sort === 'a-zDsc') {
+      this.movies = this.movies.sort((a, b) => {
+        if (a.Title > b.Title) {
+          return - 1;
+        } else if (a.Title < b.Title) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+    } else if (sort === 'yearAsc') {
+      this.movies = this.movies.sort((a, b) => +a.Year - +b.Year);
+    } else if (sort === 'yearDsc') {
+      this.movies = this.movies.sort((a, b) => +a.Year - +b.Year).reverse();
+    }
   }
 }
