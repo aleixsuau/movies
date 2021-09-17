@@ -1,0 +1,42 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <h2>{{ movie.Title }}</h2>
+    </mat-card-title>
+
+    <mat-card-subtitle>
+      <p>{{ movie.Year }}</p>
+    </mat-card-subtitle>
+  </mat-card-header>  
+  
+  <img mat-card-image [src]="movie.Poster" />
+
+  <mat-card-content>
+    <p>
+      <a [href]="movieUrlBase + movie.imdbID" target="_blank">Open IMDB Page</a>
+    
+      <button type="button" (click)="showDetail(movie.imdbID)">
+        View Detail
+      </button>
+
+      <button type="button" (click)="detailVisible = false">
+        Hide Detail
+      </button>
+    </p>
+    
+    <ul *ngIf="detailVisible">
+      <li>Rated: {{movieDetail.Rated}}</li>
+      <li>Runtime: {{movieDetail.Runtime}}</li>
+      <li>Released: {{movieDetail.Released}}</li>
+      <li>Genre: {{movieDetail.Genre}}</li>
+      <li>Director: {{movieDetail.Director}}</li>
+      <li>
+        Plot: {{movieDetail.Plot}}
+      </li>
+      <ng-container></ng-container>
+      <li *ngFor="let rating of movieDetail.Ratings">
+        Rating ({{rating.Source}}): {{rating.Value}}
+      </li>
+    </ul>
+  </mat-card-content> 
+</mat-card>
