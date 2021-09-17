@@ -1,118 +1,51 @@
-<!-- Start Instructions -->
-<p>
-  We have provided some Angular bootstrap code with hardcoded data to help you
-  start. You should include your application on this page below these
-  instructions.
-</p>
-<p>
-  Your goal is to create a movie search and listing page from the OMDB API. An
-  example structure has been hardcoded but this is just an example, you can
-  change the layout and design to make it look cleaner using your own CSS and
-  HTML.
-</p>
-<p>
-  We have defined a number of functional requirements you must adhere to, we
-  understand that you may not have time to implement everything so start with
-  the basic functionality first.
-</p>
-<p><strong>Requirements</strong></p>
-<ul>
-  <li>
-    Build a search form that will lookup movies from the OMDB API by title and
-    year
-  </li>
-  <li>Results should be displayed in a grid underneath the form</li>
-  <li>
-    If no results are found or an error occur this should be displayed to the
-    user as "No results found"
-  </li>
-  <li>
-    Results should include a title, poster, year and a link to the IMDB page
-  </li>
-  <li>
-    Results should include a view and hide details button, on clicking this the
-    movie details (runtime, ratings, release date etc) should appear
-  </li>
-  <li>You should display the total results count at the top of the list</li>
-  <li>
-    The list of results should be sortable both alphabetically and by year
-  </li>
-  <li>The search form should be validated (Title required, year optional)</li>
-</ul>
-<p><strong>OMDB API</strong><br /></p>
-<ul>
-  <li>
-    <strong>Documentation:</strong><br />
-    <a href="http://www.omdbapi.com/#usage" target="_blank">
-      http://www.omdbapi.com/#usage </a><br /><br />
-  </li>
-  <li>
-    <strong>Movie list endpoint:</strong>
-    <pre>https://omdbapi.com/?apikey=APIKEY&s=TITLE&y=YEAR</pre>
-  </li>
-  <li>
-    <strong>Movie detail endpoint:</strong>
-    <pre>https://omdbapi.com/?apikey=APIKEY&i=ID</pre>
-  </li>
-  <li>
-    <strong>Key:</strong>
-    <pre>925a5af6</pre>
-  </li>
-</ul>
-<p><strong>NOTE:</strong> Please use https requests when making api calls</p>
-<hr />
-<!-- End Instructions -->
-
-<form [formGroup]="moviesForm">
-  <h1>IMDB Movie Search</h1>
-
-  <mat-form-field appearance="legacy">
-    <mat-label>Title</mat-label>
-
-    <input matInput type="text" id="title" formControlName="title" placeholder="Movie title"/>
-
-    <mat-icon matPrefix>movie</mat-icon>
-  </mat-form-field>
-
+<div class="main_container" fxLayout="column">
+  <form [formGroup]="moviesForm" fxLayout="column">
+    <h1>IMDB Movie Search</h1>
+  
+    <mat-form-field appearance="legacy">
+      <mat-label>Title</mat-label>
+  
+      <input matInput type="text" id="title" formControlName="title" placeholder="Movie title" />
+  
+      <mat-icon matPrefix>movie</mat-icon>
+    </mat-form-field>
+  
     <mat-form-field appearance="legacy">
       <mat-label>Year</mat-label>
-    
+  
       <input matInput type="number" id="year" formControlName="year" placeholder="Movie year" />
-    
+  
       <mat-icon matPrefix>calendar</mat-icon>
     </mat-form-field>
+  
+    <button mat-raised-button type="submit"
+      (click)="searchMovies(moviesForm.get('title')?.value, moviesForm.get('year')?.value)"
+      [disabled]="moviesForm.invalid">
+      Search
+    </button>
+  </form>
 
-  <button
-    mat-raised-button
-    type="submit"
-    (click)="searchMovies(moviesForm.get('title')?.value, moviesForm.get('year')?.value)"
-    [disabled]="moviesForm.invalid"
-  >
-    Search
-  </button>
-</form>
-
-  Results: {{movies?.length || 0}}
-
-<mat-form-field appearance="fill">
-  <mat-label>Sort By</mat-label>
-
-  <mat-select (selectionChange)="sortMovies($event.value)">
-    <mat-option selected disabled>Sort By</mat-option>
-    <mat-option value="a-zAsc">Alphabetically (Ascending)</mat-option>
-    <mat-option value="a-zDsc">Alphabetically (Descending)</mat-option>
-    <mat-option value="yearAsc">Year (Ascending)</mat-option>
-    <mat-option value="yearDsc">Year (Descending)</mat-option>
-  </mat-select>
-</mat-form-field>
-
-<div *ngIf="!movies && showMovieResults">
-  No results found
-</div>
-
-<div class="movies" *ngIf="movies">
-  <div class="movie" >
+  <div class="results" fxLayoutAlign="end center">
+    Results: {{movies?.length || 0}}
+  </div>
+  
+  <mat-form-field appearance="fill">
+    <mat-label>Sort By</mat-label>
+  
+    <mat-select (selectionChange)="sortMovies($event.value)">
+      <mat-option selected disabled>Sort By</mat-option>
+      <mat-option value="a-zAsc">Alphabetically (Ascending)</mat-option>
+      <mat-option value="a-zDsc">Alphabetically (Descending)</mat-option>
+      <mat-option value="yearAsc">Year (Ascending)</mat-option>
+      <mat-option value="yearDsc">Year (Descending)</mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+  <div *ngIf="!movies && showMovieResults">
+    No results found
+  </div>
+  
+  <div class="movies" *ngIf="movies" fxLayout="row wrap" fxLayoutAlign="space-around start">
     <app-movie-card *ngFor="let movie of movies" [movie]="movie"></app-movie-card>
   </div>
 </div>
-
