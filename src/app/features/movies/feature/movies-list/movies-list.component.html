@@ -77,7 +77,11 @@
     <input type="number" id="year" name="year" formControlName="year" />
   </p>
 
-  <button type="submit" (click)="searchMovies(moviesForm.get('title')?.value)">
+  <button 
+    type="submit"
+    (click)="searchMovies(moviesForm.get('title')?.value, moviesForm.get('year')?.value)"
+    [disabled]="moviesForm.invalid"
+  >
     Search
   </button>
 </form>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MoviesService } from '../../data-access/movies/movies.service';
 
 @Component({
@@ -21,14 +21,14 @@ export class MoviesListComponent implements OnInit {
 
   ngOnInit(): void {
     this.moviesForm = this.formBuilder.group({
-      title: null,
+      title: [null, Validators.required],
       year: null
     });
   }
 
-  searchMovies(title: string): void {
+  searchMovies(title: string, year?: number): void {
     this.moviesService
-      .searchMovies(title)
+      .searchMovies(title, year)
       .subscribe(
         movies => {
           this.movies = movies;

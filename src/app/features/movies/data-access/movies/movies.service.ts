@@ -11,13 +11,17 @@ export class MoviesService {
 
   constructor(private http: HttpClient) { }
 
-  searchMovies(title: string): Observable<IMovie[] | null> {
+  searchMovies(title: string, year?: number): Observable<IMovie[] | null> {
     const s = title;
     let params = {};
     const endpoint = `${this.baseUrl}`;
 
     if (title) {
       params = { ...params, s };
+    }
+
+    if (year) {
+      params = { ...params, y: year };
     }
 
     return this.http
