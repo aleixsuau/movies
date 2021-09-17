@@ -13,16 +13,27 @@
 
   <mat-card-content>
     <p>
-      <a [href]="movieUrlBase + movie.imdbID" target="_blank">Open IMDB Page</a>
-    
-      <button type="button" (click)="showDetail(movie.imdbID)">
+      <a [href]="movieUrlBase + movie.imdbID" target="_blank">Open IMDB Page</a>  
+    </p>
+
+    <mat-card-actions>
+      <button 
+        type="button"
+        mat-raised-button
+        (click)="showDetail(movie.imdbID)"
+        [color]="detailVisible ? 'primary' : null"
+      >
         View Detail
       </button>
 
-      <button type="button" (click)="detailVisible = false">
+      <button
+        type="button"
+        mat-raised-button
+        (click)="detailVisible = false"
+      >
         Hide Detail
       </button>
-    </p>
+    </mat-card-actions>
     
     <ul *ngIf="detailVisible">
       <li>Rated: {{movieDetail.Rated}}</li>
