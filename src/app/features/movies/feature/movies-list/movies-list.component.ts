@@ -25,11 +25,13 @@ export class MoviesListComponent implements OnInit {
   }
 
   searchMovies(title: string, year?: number): void {
-    this.showMovieResults = true;
-
     this.moviesService
       .searchMovies(title, year)
-      .subscribe(movies => this.movies = movies);
+      .subscribe(
+        movies => {
+          this.movies = movies;
+          this.showMovieResults = true;
+      });
   }
 
   sortMovies(sort: string): void {
