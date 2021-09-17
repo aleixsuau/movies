@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +28,7 @@ export class MoviesService {
       .get<IAPIResponse>(endpoint, { params })
       .pipe(
         map(response => response.Response ? response.Search : null),
+        catchError(err => of(null)),
       );
   }
 
